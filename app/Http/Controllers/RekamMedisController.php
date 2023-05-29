@@ -335,7 +335,53 @@ class RekamMedisController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'=> 'required',
+            'fullname' => 'required',
+            'date_of_birth' => 'required',
+            'gender'=>'required',
+            'blood_type'=>'required',
+            'marital_status'=>'required',
+            'address'=>'required',
+            'identity_type'=>'required',
+            'identity_number'=>'required',
+            'phone_number'=>'required',
+        ],[
+            'title.required'=>'harus dipilih salah satu',
+            'fullname.required'=>'tidak boleh kosong',
+            'gender.required'=>'harus dipilih salah satu',
+            'date_of_birth.required'=>'tidak boleh kosong',
+            'blood_type.required'=>'harus dipilih salah satu',
+            'marital_status.required'=>'harus dipilih salah satu',
+            'identity_type.required'=>'harus dipilih salah satu',
+            'identity_number.required'=>'tidak boleh kosong',
+            'phone_number.required'=>'tidak boleh kosong',
+            'address.required'=>'tidak boleh kosong'
+        ]);
+        $data = [
+            'title'=>$request['title'], 
+    'fullname'=>$request['fullname'], 
+    'date_of_birth'=>$request['date_of_birth'], 
+    'gender'=>$request['gender'], 
+    'address'=>$request['address'], 
+    'province_id'=>$request['province_id'], 
+    'city_id'=>$request['city_id'], 
+    'education_id'=>$request['education_id'], 
+    'work_id'=>$request['work_id'], 
+    'postal_code'=>$request['postal_code'], 
+    'marital_status'=>$request['marital_status'], 
+    'phone_number'=>$request['phone_number'], 
+    'blood_type'=>$request['blood_type'], 
+    'identity_type'=>$request['identity_type'], 
+    'identity_number'=>$request['identity_number'], 
+    'data_status'=>1, 
+    'created_at'=>date('Y-m-d h:n:s'),
+        ];
+        $role = Role::create(['name' => $request->input('name')]);
+        $role->syncPermissions($request->input('permission'));
+    
+        return redirect()->route('roles.index')
+                        ->with('success','Role created successfully');
     }
 
     /**
